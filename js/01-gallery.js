@@ -32,17 +32,21 @@ function onClickImege(event) {
     return;
   }
 
-  const instance = basicLightbox.create(`
+  const instance = basicLightbox.create(
+    `
     <img src="${event.target.dataset.source}" width="800" height="600">
-`);
+`,
+    {
+      onShow: (instance) => window.addEventListener("keydown", onCloseModal),
+      onClose: (instance) =>
+        window.removeEventListener("keydown", onCloseModal),
+    }
+  );
   instance.show();
 
   function onCloseModal(event) {
     if (event.code === "Escape") {
       instance.close();
-      gallery.removeEventListener("keydown", onCloseModal);
     }
   }
-
-  gallery.addEventListener("keydown", onCloseModal);
 }
